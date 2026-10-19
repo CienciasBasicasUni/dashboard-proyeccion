@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from io import BytesIO
 import re
@@ -618,12 +617,13 @@ st.caption(
 # 10. PESTAÑAS DEL DASHBOARD
 # ==========================================================
 
-tab_general, tab_sede, tab_facultad, tab_programa, tab_anios, tab_datos = st.tabs([
+tab_general, tab_sede, tab_facultad, tab_programa, tab_anios, tab_estudiantes, tab_datos = st.tabs([
     "Resumen general",
     "Por sede / CU",
     "Por facultad",
     "Por programa",
     "Proyección 2026–2027",
+    "Estudiantes",
     "Datos y exportación"
 ])
 
@@ -975,7 +975,37 @@ with tab_anios:
 
 
 # ==========================================================
-# PESTAÑA 6. DATOS Y EXPORTACIÓN
+# PESTAÑA 6. ESTUDIANTES
+# ==========================================================
+
+with tab_estudiantes:
+
+    st.subheader("Detalle de estudiantes")
+
+    columnas_estudiantes = [
+        "ID", "NOMBRE", "CORREO", "SEDE",
+        "COD", "PROGRAMA", "NIVEL"
+    ]
+
+    estudiantes = df.copy()
+
+    for columna in ["NOMBRE", "CORREO"]:
+        if columna not in estudiantes.columns:
+            estudiantes[columna] = "Sin dato"
+
+    estudiantes["PORCENTAJE"] = estudiantes["PORCENTAJE_ANALISIS"].round(1)
+
+    columnas_estudiantes.append("PORCENTAJE")
+
+    st.dataframe(
+        estudiantes[columnas_estudiantes],
+        use_container_width=True,
+        hide_index=True
+    )
+
+
+# ==========================================================
+# PESTAÑA 7. DATOS Y EXPORTACIÓN
 # ==========================================================
 
 with tab_datos:
