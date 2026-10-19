@@ -467,15 +467,16 @@ try:
 
     df_completo = preparar_base(base_original)
 
-    # Esta versión del dashboard trabaja exclusivamente con Buga.
+    # Esta versión del dashboard trabaja exclusivamente con CU BUGA.
+    # La comparación normaliza mayúsculas, minúsculas y tildes.
     df_completo = df_completo[
-        df_completo["SEDE"].apply(normalizar_texto) == "BUGA"
+        df_completo["SEDE"].apply(normalizar_texto) == "CU BUGA"
     ].copy()
 
     if df_completo.empty:
         st.error(
-            "No se encontraron registros de Buga en la hoja seleccionada. "
-            "Verifica que la columna SEDE contenga el valor Buga."
+            "No se encontraron registros con SEDE = 'CU BUGA' en la hoja seleccionada. "
+            "Verifica que la columna SEDE contenga exactamente ese valor."
         )
         st.stop()
 
