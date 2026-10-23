@@ -996,6 +996,39 @@ with tab_estudiantes:
     estudiantes["PORCENTAJE"] = estudiantes["PORCENTAJE_ANALISIS"].round(1)
 
     columnas_estudiantes.append("PORCENTAJE")
+    
+    # Buscador por código de estudiante o número de documento
+    busqueda = st.text_input(
+        "Buscar estudiante",
+        placeholder="Escribe el código o número de documento...",
+        key="busqueda_estudiante"
+    )
+
+    if busqueda.strip():
+        termino = busqueda.strip()
+
+        # Buscar por código (ID)
+        coincidencia_id = (
+            estudiantes["ID"]
+            .astype("string")
+            .str.contains(termino, case=False, na=False, regex=False)
+        )
+
+        # Buscar por número de documento, si existe esa columna
+        if "DOCUMENTO" in estudiantes.columns:
+            coincidencia_documento = (
+                estudiantes["DOCUMENTO"]
+                .astype("string")
+                .str.contains(termino, case=False, na=False, regex=False)
+            )
+
+            estudiantes = estudiantes[
+                coincidencia_id | coincidencia_documento
+            ]
+        else:
+            estudiantes = estudiantes[coincidencia_id]
+
+    st.caption(f"Estudiantes encontrados: {len(estudiantes)}")
 
     st.dataframe(
         estudiantes[columnas_estudiantes],
