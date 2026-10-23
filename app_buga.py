@@ -1016,6 +1016,15 @@ with tab_estudiantes:
         hide_index=True
     )
 
+    st.download_button(
+        "Descargar estudiantes en Excel",
+        data=exportar_excel({
+            "Estudiantes": estudiantes[columnas_estudiantes]
+        }),
+        file_name="proyeccion_estudiantes_buga.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
 
 # ==========================================================
 # PESTAÑA 7. DATOS Y EXPORTACIÓN
